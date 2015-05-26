@@ -35,16 +35,62 @@
     <h3 class="date">Vakgroep Informatica, HoGent, 2015-06-22</h3>
 </section>
 
-<section><section id="voor-we-beginnen" class="titleslide slide level1"><h1>Voor we beginnen</h1></section><section id="voor-we-beginnen-1" class="slide level2">
+<section id="voor-we-beginnen" class="slide level2">
 <h1>Voor we beginnen</h1>
 <p>Installeer</p>
 <ul>
-<li>Git (incl. Git Bash)</li>
+<li>Git (incl. Git Bash) <a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></li>
+<li>VirtualBox <a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a>
+<ul>
+<li>incl. &quot;Extension pack&quot;</li>
+</ul></li>
+<li>Vagrant <a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a></li>
+</ul>
+</section>
+<section id="agenda" class="slide level2">
+<h1>Agenda</h1>
+<ul>
+<li>Demo + hands-on: opzetten LAMP stack</li>
+<li>Basistaken Linux systeembeheer</li>
+</ul>
+</section>
+<section><section id="opzetten-server" class="titleslide slide level1"><h1>Opzetten server</h1></section><section id="stap-1" class="slide level2">
+<h1>Stap 1</h1>
+<p>In een Bash shell, doe:</p>
+<pre class="ShellSession"><code>$ mkdir workshop-linux
+$ cd workshop-linux
+$ git clone https://github.com/bertvv/lampstack
+$ cd lampstack
+$ vagrant up</code></pre>
+</section></section>
+<section><section id="intermezzo" class="titleslide slide level1"><h1>Intermezzo</h1></section><section id="tools" class="slide level2">
+<h1>Tools</h1>
+<ul>
 <li>VirtualBox</li>
 <li>Vagrant</li>
+<li>Ansible</li>
 </ul>
-</section><section id="agenda" class="slide level2">
-<h1>Agenda</h1>
+</section><section id="virtualbox" class="slide level2">
+<h1>VirtualBox</h1>
+<p>Netwerk:</p>
+<ul>
+<li>NAT, NatNetwork</li>
+<li>Bridged</li>
+<li>Host-only</li>
+<li>Internal</li>
+</ul>
+</section></section>
+<section><section id="opzetten-server-vervolg" class="titleslide slide level1"><h1>Opzetten server (vervolg)</h1></section><section id="stap-2" class="slide level2">
+<h1>Stap 2</h1>
+<p>Open webbrowser, surf naar <a href="http://192.168.56.77/">http://192.168.56.77/</a></p>
+</section><section id="er-is-geen-stap-3" class="slide level2">
+<h1>Er is geen stap 3</h1>
+<ul>
+<li>Je hebt een werkende Linux webserver met MySQL databank</li>
+<li>Bestanden (PHP, HTML) in de <code>www/</code>-map kan je bekijken via de browser</li>
+<li>Om de databank te beheren, ga naar <a href="http://192.168.56.77/phpmyadmin/">http://192.168.56.77/phpmyadmin/</a></li>
+<li>Om Drupal te activeren, ga naar <a href="http://192.168.56.77/drupal7/install.php">http://192.168.56.77/drupal7/install.php</a></li>
+</ul>
 </section></section>
 <section><section id="thats-it" class="titleslide slide level1"><h1>That's it!</h1></section><section id="bedankt" class="slide level2">
 <h1>Bedankt!</h1>

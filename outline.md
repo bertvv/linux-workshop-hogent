@@ -53,6 +53,7 @@ Waarom?
 
 * directorystructuur en basiscommando's: ls, cd
 * structuur van een commando
+* Waar is Apache geïnstalleerd, config, enz (rpm -ql)
 * gebruikers, groepen en permissies
 * sudo
 
