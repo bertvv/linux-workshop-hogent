@@ -15,8 +15,12 @@ index.html: linux-workshop.md reveal.js
 		--standalone \
 		--to=revealjs \
 		--template=default.revealjs.html \
-		--variable=theme:night \
+		--variable=theme:white \
+		--highlight-style=zenburn \
 		--output $@ $<
+
+# Highlight styles: espresso or zenburn (not enough contrast in the others)
+# Theme: black, moon, night
 
 ## Download and install reveal.js locally
 $(REVEAL_JS_DIR):
