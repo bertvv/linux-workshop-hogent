@@ -10,7 +10,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="reveal.js/css/reveal.css"/>
   <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme">
   <!-- If the query includes 'print-pdf', include the PDF print sheet -->
   <script>
     if( window.location.search.match( /print-pdf/gi ) ) {
@@ -39,13 +59,14 @@
 <h1>Voor we beginnen</h1>
 <p>Installeer</p>
 <ul>
-<li>Git (incl. Git Bash) <a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></li>
-<li>VirtualBox <a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a>
+<li>Git (incl. Git Bash) <a href="https://git-scm.com/downloads" class="uri">https://git-scm.com/downloads</a></li>
+<li>VirtualBox <a href="https://www.virtualbox.org/wiki/Downloads" class="uri">https://www.virtualbox.org/wiki/Downloads</a>
 <ul>
 <li>incl. &quot;Extension pack&quot;</li>
 </ul></li>
-<li>Vagrant <a href="https://www.vagrantup.com/downloads.html">https://www.vagrantup.com/downloads.html</a></li>
+<li>Vagrant <a href="https://www.vagrantup.com/downloads.html" class="uri">https://www.vagrantup.com/downloads.html</a></li>
 </ul>
+<p>(staat al geïnstalleerd op klaspc's)</p>
 </section>
 <section id="agenda" class="slide level2">
 <h1>Agenda</h1>
@@ -57,10 +78,11 @@
 <section><section id="opzetten-server" class="titleslide slide level1"><h1>Opzetten server</h1></section><section id="stap-1" class="slide level2">
 <h1>Stap 1</h1>
 <p>In een Bash shell, doe:</p>
-<pre class="ShellSession"><code>$ mkdir workshop-linux
+<pre><code>$ mkdir workshop-linux
 $ cd workshop-linux
-$ git clone https://github.com/bertvv/lampstack
+$ git clone --config core.autocrlf=false  https://github.com/bertvv/lampstack
 $ cd lampstack
+$ ./scripts/dependencies.sh
 $ vagrant up</code></pre>
 </section></section>
 <section><section id="intermezzo" class="titleslide slide level1"><h1>Intermezzo</h1></section><section id="tools" class="slide level2">
@@ -72,36 +94,302 @@ $ vagrant up</code></pre>
 </ul>
 </section><section id="virtualbox" class="slide level2">
 <h1>VirtualBox</h1>
-<p>Netwerk:</p>
+<p>Netwerkinterfaces</p>
 <ul>
 <li>NAT, NatNetwork</li>
 <li>Bridged</li>
 <li>Host-only</li>
 <li>Internal</li>
 </ul>
+<p>Je kan combinatie gebruiken, tot 4 adapters per VM</p>
+</section><section id="nat" class="slide level2">
+<h1>NAT</h1>
+<figure>
+<img src="img/vbnat.png" alt="NAT interface" /><figcaption>NAT interface</figcaption>
+</figure>
+</section><section id="bridged" class="slide level2">
+<h1>Bridged</h1>
+<figure>
+<img src="img/vbbridged.png" alt="Bridged interface" /><figcaption>Bridged interface</figcaption>
+</figure>
+</section><section id="host-only" class="slide level2">
+<h1>Host-only</h1>
+<figure>
+<img src="img/vbho.png" alt="Host-only interface" /><figcaption>Host-only interface</figcaption>
+</figure>
+</section><section id="internal" class="slide level2">
+<h1>Internal</h1>
+<figure>
+<img src="img/vbint.png" alt="Internal interface" /><figcaption>Internal interface</figcaption>
+</figure>
+</section><section id="vagrant" class="slide level2">
+<h1>Vagrant</h1>
+<p><a href="https://www.vagrantup.com/" class="uri">https://www.vagrantup.com/</a></p>
+<ul>
+<li>Command-line tool voor automatiseren opzetten VMs</li>
+<li>Ondersteunt VirtualBox, VMWare, Hyper-V, Docker, enz.</li>
+<li>Start van <em>base box</em> (minimale installatie)</li>
+<li>Configuratie ahv shell script, configuration management system
+<ul>
+<li><em>Ansible</em>, CFEngine, Chef, Puppet, Salt</li>
+</ul></li>
+</ul>
+</section><section class="slide level2">
+
+<figure>
+<img src="img/mitchell_hashimoto.jpg" alt="Mitchell Hashimoto op Config Management Camp, Gent 2015" /><figcaption>Mitchell Hashimoto op Config Management Camp, Gent 2015</figcaption>
+</figure>
+</section><section id="ansible" class="slide level2">
+<h1>Ansible</h1>
+<p><a href="http://www.ansible.com/" class="uri">http://www.ansible.com/</a></p>
+<ul>
+<li>Configuration management system</li>
+<li>Beschrijf de gewenste toestand van je systeem (Yaml)
+<ul>
+<li><em>Declaratief</em>, niet imperatief</li>
+<li>Ansible brengt systeem naar die toestand</li>
+<li><em>Idempotent</em></li>
+</ul></li>
+<li>Reproduceerbaar
+<ul>
+<li><code>git clone; vagrant up</code></li>
+<li>dev → qa → prod</li>
+</ul></li>
+<li>Schaalbaar (bv. Spotify: 1000'en servers)</li>
+</ul>
+</section><section id="vb.-ansible-playbook" class="slide level2">
+<h1>vb. Ansible playbook</h1>
+<pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="ot">---</span>
+<span class="kw">-</span> <span class="fu">hosts:</span> webserver
+  <span class="fu">handlers:</span>
+    <span class="kw">-</span> <span class="fu">name:</span> restart httpd
+      <span class="fu">service:</span>
+        <span class="fu">name:</span> httpd
+        <span class="fu">state:</span> restarted
+  <span class="fu">tasks:</span>
+    <span class="kw">-</span> <span class="fu">name:</span> Ensure Apache is installed
+      <span class="fu">yum:</span>
+        <span class="fu">pkg:</span> httpd
+        <span class="fu">state:</span> installed
+    <span class="kw">-</span> <span class="fu">name:</span> Ensure Apache is running
+      <span class="fu">service:</span>
+        <span class="fu">name:</span> httpd
+        <span class="fu">state:</span> running
+        <span class="fu">enabled:</span> true
+    <span class="kw">-</span> <span class="fu">name:</span> Configure Apache
+      <span class="fu">template:</span>
+        <span class="fu">src:</span> httpd.conf
+        <span class="fu">dest:</span> /etc/httpd/httpd.conf
+      <span class="fu">notify:</span> restart httpd</code></pre>
 </section></section>
 <section><section id="opzetten-server-vervolg" class="titleslide slide level1"><h1>Opzetten server (vervolg)</h1></section><section id="stap-2" class="slide level2">
 <h1>Stap 2</h1>
-<p>Open webbrowser, surf naar <a href="http://192.168.56.77/">http://192.168.56.77/</a></p>
+<p>Open webbrowser, surf naar <a href="http://192.168.56.77/" class="uri">http://192.168.56.77/</a></p>
 </section><section id="er-is-geen-stap-3" class="slide level2">
 <h1>Er is geen stap 3</h1>
 <ul>
-<li>Je hebt een werkende Linux webserver met MySQL databank</li>
-<li>Bestanden (PHP, HTML) in de <code>www/</code>-map kan je bekijken via de browser</li>
-<li>Om de databank te beheren, ga naar <a href="http://192.168.56.77/phpmyadmin/">http://192.168.56.77/phpmyadmin/</a></li>
-<li>Om Drupal te activeren, ga naar <a href="http://192.168.56.77/drupal7/install.php">http://192.168.56.77/drupal7/install.php</a></li>
+<li>Je hebt een werkende Linux webserver met MySQL databank en Wordpress</li>
+<li>Om de Wordpress-site te initialiseren, ga naar <a href="http://192.168.56.77/wordpress/" class="uri">http://192.168.56.77/wordpress/</a></li>
+<li>Om de databank te beheren, ga naar <a href="http://192.168.56.77/phpmyadmin/" class="uri">http://192.168.56.77/phpmyadmin/</a></li>
+<li>PHP-code in <code>www/</code> is meteen zichtbaar op de website</li>
 </ul>
+</section><section id="vm-gebruiken" class="slide level2">
+<h1>VM gebruiken</h1>
+<ul>
+<li>Afsluiten: <code>vagrant halt</code></li>
+<li>Iets verkeerd gedaan? <code>vagrant destroy --force; vagrant up</code></li>
+<li>Inloggen op de server kan via:
+<ul>
+<li><code>vagrant ssh</code> (geen wachtwoord)</li>
+<li>of <code>ssh vagrant@192.168.56.77</code> (wachtwoord vagrant)</li>
+</ul></li>
+</ul>
+</section><section id="vagrant-wampxampp" class="slide level2">
+<h1>Vagrant &gt;&gt; Wamp/Xampp</h1>
+<ul>
+<li>PHP, Java, Javascript, ... draaien in productie meestal op Linux-servers</li>
+<li>Ontwikkelingsomgeving moet zoveel mogelijk lijken op productie</li>
+</ul>
+</section><section id="waarom" class="slide level2">
+<h1>Waarom?</h1>
+<ul>
+<li>Discussies: &quot;Het werkte in dev, nu een probleem van ops&quot;</li>
+<li>Ontbrekende libraries, oudere versies, ... in productie</li>
+<li>Bestanden niet gevonden
+<ul>
+<li>vb. padnamen hard coded <code>C:\wwwroot'</code></li>
+<li>Linux bestandsnamen: <strong>case sensitive</strong>!</li>
+</ul></li>
+<li>Beveiligingsinstellingen in productie die er niet waren in dev</li>
+<li>...</li>
+</ul>
+<p>⇒ Ook een dev heeft noties van Linux nodig!</p>
+</section><section id="state-of-the-art" class="slide level2">
+<h1>State-of-the-art</h1>
+<ul>
+<li>Automate all the things</li>
+<li>Infrastructure as code</li>
+<li>Test Driven Infrastructure</li>
+<li>Agile in operations (vb. Kanban)</li>
+<li>DevOps (Culture, Automation, Monitoring, Sharing)</li>
+</ul>
+<p>⇒ Een sysadmin heeft ook skills van een ontwikkelaar nodig!</p>
+</section></section>
+<section><section id="op-verkenning-in-het-systeem" class="titleslide slide level1"><h1>Op verkenning in het systeem</h1></section><section id="inloggen" class="slide level2">
+<h1>Inloggen</h1>
+<pre><code>$ vagrant ssh
+Last login: Fri Jun 19 09:08:31 2015 from 10.0.2.2
+Welcome to your Packer-built virtual machine.
+[vagrant@lampstack ~]$ pwd
+/home/vagrant
+[vagrant@lampstack ~]$ _</code></pre>
+</section><section id="commandos" class="slide level2">
+<h1>Commando's</h1>
+<h3 id="command---options-arguments">command --options arguments</h3>
+<p>commando:</p>
+<ul>
+<li>Bash builtin</li>
+<li>uitvoerbaar bestand in <code>${PATH}</code> (doe <code>echo ${PATH}</code>)</li>
+<li>in huidige directory ⇒ <code>./script.sh</code></li>
+</ul>
+</section><section id="opties" class="slide level2">
+<h1>Opties</h1>
+<ul>
+<li>veranderen het gedrag van een commando</li>
+<li>beginnen met <code>-</code> (kort, één letter) of <code>--</code> (lang, woord)</li>
+<li>aan elkaar hangen, vb. <code>ls -la</code> == <code>ls -l -a</code></li>
+<li>kunnen ook argumenten hebben, vb. <code>cut -d:</code>, <code>cut --delimiter=:</code></li>
+<li>let op voor uitzonderingen (bv. <code>find</code>)</li>
+</ul>
+</section><section id="argumenten" class="slide level2">
+<h1>Argumenten</h1>
+<ul>
+<li>&quot;objecten&quot; waar het commando op werkt</li>
+<li>vaak bestanden of directories</li>
+</ul>
+</section><section id="hulp-zoeken" class="slide level2">
+<h1>Hulp zoeken</h1>
+<ul>
+<li>man pages, bv. <code>man passwd</code>, <code>man 5 passwd</code></li>
+<li><a href="http://explainshell.com/" class="uri">http://explainshell.com/</a></li>
+<li>Stack overflow ;-)</li>
+<li>Paul Cobbaut, <a href="http://linux-training.be/">Linux Fundamentals</a> (boek)</li>
+<li>Tip: leg een <a href="https://github.com/bertvv/cheat-sheets">cheat sheet</a> aan</li>
+<li>Mailtje sturen naar bert ;-)</li>
+</ul>
+</section><section id="de-unix-filosofie" class="slide level2">
+<h1>De UNIX-filosofie</h1>
+<p>Maak tools die één taak goed kunnen en laat ze samenwerken</p>
+</section><section id="oefening" class="slide level2">
+<h1>Oefening</h1>
+<ul>
+<li>Paul Cobbaut, <a href="http://linux-training.be/funhtml/pt03.html">deel III (first steps on the command line)</a></li>
+<li>Waar vind je de configuratie van Apache?</li>
+<li>Waar op de server moeten we een website installeren?</li>
+<li>Wat zijn de netwerkinstellingen van de VM?
+<ul>
+<li>IP adres, default GW, DNS-server</li>
+</ul></li>
+<li>Kan je &quot;pingen&quot; tussen hostsysteem en VM?</li>
+<li>Installeer de laatste updates op de VM</li>
+</ul>
+</section></section>
+<section><section id="basistaken-systeembeheer" class="titleslide slide level1"><h1>Basistaken systeembeheer</h1></section><section id="software-beheren" class="slide level2">
+<h1>Software beheren</h1>
+<ul>
+<li><code>yum search ZOEKTERM</code></li>
+<li><code>yum install PAKKET</code></li>
+<li><code>yum remove PAKKET</code></li>
+<li><code>yum update</code></li>
+<li><code>yum provides *bin/COMMANDO</code> → welk pakket bevat COMMANDO?</li>
+<li><code>rpm -ql PAKKET</code> → welke bestanden zijn geïnstalleerd met PAKKET?</li>
+</ul>
+</section><section id="services-beheren" class="slide level2">
+<h1>Services beheren</h1>
+<ul>
+<li><code>systemctl status SERVICE</code></li>
+<li><code>systemctl {start,stop,restart} SERVICE</code>
+<ul>
+<li>meteen</li>
+</ul></li>
+<li><code>systemctl {enable,disable} SERVICE</code>
+<ul>
+<li>bij booten</li>
+</ul></li>
+<li><code>systemctl list-units --type service</code></li>
+</ul>
+</section><section id="configuratie" class="slide level2">
+<h1>Configuratie</h1>
+<ul>
+<li>Tekstbestand in <code>/etc/</code>
+<ul>
+<li>vb. <code>/etc/httpd/httpd.conf</code></li>
+</ul></li>
+<li>Bestand bewerken met teksteditor (<code>vim</code>, <code>nano</code>)</li>
+<li>Syntax controleren
+<ul>
+<li>afh. service, bv. <code>apachectl configtest</code></li>
+</ul></li>
+<li>Service herstarten
+<ul>
+<li><code>systemctl restart httpd.service</code></li>
+</ul></li>
+</ul>
+</section></section>
+<section><section id="gebruikers-groepen-permissies" class="titleslide slide level1"><h1>Gebruikers, groepen, permissies</h1></section><section id="rootadmin" class="slide level2">
+<h1>Root/admin</h1>
+<ul>
+<li>inloggen als root = bad practice</li>
+<li>gewone gebruiker + <code>sudo</code></li>
+</ul>
+</section><section id="permissies" class="slide level2">
+<h1>Permissies</h1>
+<ul>
+<li>Gebruikers ingedeeld in groepen</li>
+<li>Permissies toekennen aan
+<ul>
+<li>eigenaar (user)</li>
+<li>groep (group)</li>
+<li>andere gebruikers (others)</li>
+</ul></li>
+<li><code>ls -l</code>, <code>chown</code>, <code>chgrp</code>, <code>chown</code></li>
+</ul>
+</section><section id="permissiecodes" class="slide level2">
+<h1>Permissiecodes</h1>
+<ul>
+<li>4 getallen (0-7)
+<ul>
+<li>&quot;special&quot;, user, group, others</li>
+</ul></li>
+<li>Bitpatroon 3 bits
+<ul>
+<li>4 ↔ read</li>
+<li>2 ↔ write</li>
+<li>1 ↔ execute/directory access</li>
+</ul></li>
+</ul>
+</section><section id="permissiecodes-1" class="slide level2">
+<h1>Permissiecodes</h1>
+<p>vb. <code>chmod 0750 /usr/local/bin/myscript</code></p>
+<ul>
+<li>0 → speciale permissies (uit)</li>
+<li>7 = 4 + 2 + 1 → eigenaar kan lezen, schrijven, uitvoeren</li>
+<li>5 = 4 + 1 → groepsleden kunnen lezen, uitvoeren</li>
+<li>0 → andere gebruikers kunnen niets</li>
+</ul>
+</section><section id="chmod-777-is-nooit-de-oplossing" class="slide level2">
+<h1><code>chmod 777</code> is <em>nooit</em> de oplossing!</h1>
 </section></section>
 <section><section id="thats-it" class="titleslide slide level1"><h1>That's it!</h1></section><section id="bedankt" class="slide level2">
 <h1>Bedankt!</h1>
-<p>Slides: <a href="https://github.com/bertvv/linux-workshop-hogent">https://github.com/bertvv/linux-workshop-hogent</a></p>
-<p>Code: <a href="https://github.com/bertvv/vagrant-example">https://github.com/bertvv/vagrant-example</a></p>
+<p>Slides: <a href="https://github.com/bertvv/linux-workshop-hogent" class="uri">https://github.com/bertvv/linux-workshop-hogent</a></p>
+<p>Code: <a href="https://github.com/bertvv/vagrant-example" class="uri">https://github.com/bertvv/vagrant-example</a></p>
 <p>Meer op:</p>
 <ul>
-<li>Videolessen: <a href="https://www.youtube.com/user/bertvvrhogent/">https://www.youtube.com/user/bertvvrhogent/</a></li>
-<li>Github: <a href="https://github.com/bertvv/">https://github.com/bertvv/</a></li>
-<li>Ansible rollen: <a href="https://https://galaxy.ansible.com/list#/users/8834">https://https://galaxy.ansible.com/list#/users/8834</a></li>
-<li><a href="https://twitter.com/bertvanvreckem">@bertvanvreckem</a></li>
+<li>Videolessen: <a href="https://www.youtube.com/user/bertvvrhogent/" class="uri">https://www.youtube.com/user/bertvvrhogent/</a></li>
+<li>Github: <a href="https://github.com/bertvv/" class="uri">https://github.com/bertvv/</a></li>
+<li>Ansible rollen: <a href="https://https://galaxy.ansible.com/list#/users/8834" class="uri">https://https://galaxy.ansible.com/list#/users/8834</a></li>
+<li>Twitter: <a href="https://twitter.com/bertvanvreckem">@bertvanvreckem</a></li>
 </ul>
 <figure>
 <img src="http://i.creativecommons.org/l/by/4.0/88x31.png" alt="CC-BY" /><figcaption>CC-BY</figcaption>
@@ -125,7 +413,7 @@ $ vagrant up</code></pre>
         center: true,                       // Vertical centering of slides
         maxScale: 1.5,                  // Bounds for smallest/largest possible content scale
         slideNumber: false,                // Display the page number of the current slide
-        theme: 'night', // available themes are in /css/theme
+        theme: 'white', // available themes are in /css/theme
         transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
         // Optional libraries used to extend on reveal.js

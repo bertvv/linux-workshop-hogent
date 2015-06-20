@@ -87,9 +87,12 @@ Je kan combinatie gebruiken, tot 4 adapters per VM
 
 * Configuration management system
 * Beschrijf de gewenste toestand van je systeem (Yaml)
+    * *Declaratief*, niet imperatief
     * Ansible brengt systeem naar die toestand
-    * Idempotent
-* Herhaalbaar (dev -> qa -> prod)
+    * *Idempotent*
+* Reproduceerbaar
+    * `git clone; vagrant up`
+    * dev → qa → prod
 * Schaalbaar (bv. Spotify: 1000'en servers)
 
 ## vb. Ansible playbook
@@ -130,6 +133,7 @@ Open webbrowser, surf naar <http://192.168.56.77/>
 * Je hebt een werkende Linux webserver met MySQL databank en Wordpress
 * Om de Wordpress-site te initialiseren, ga naar <http://192.168.56.77/wordpress/>
 * Om de databank te beheren, ga naar <http://192.168.56.77/phpmyadmin/>
+* PHP-code in `www/` is meteen zichtbaar op de website
 
 ## VM gebruiken
 
@@ -148,20 +152,25 @@ Open webbrowser, surf naar <http://192.168.56.77/>
 
 * Discussies: "Het werkte in dev, nu een probleem van ops"
 * Ontbrekende libraries, oudere versies, ... in productie
-* Bestanden op andere plaats (padnamen hard coded)
+* Bestanden niet gevonden
+    * vb. padnamen hard coded `C:\wwwroot'`
+    * Linux bestandsnamen: **case sensitive**!
 * Beveiligingsinstellingen in productie die er niet waren in dev
 * ...
 
-=> Ook een dev heeft noties van Linux nodig!
+⇒ Ook een dev heeft noties van Linux nodig!
 
 ## State-of-the-art
 
+* Automate all the things
 * Infrastructure as code
-* Test driven infrastructure
+* Test Driven Infrastructure
 * Agile in operations (vb. Kanban)
-* DevOps
+* DevOps (Culture, Automation, Monitoring, Sharing)
 
-=> Een sysadmin heeft ook skills van een ontwikkelaar nodig!
+⇒ Een sysadmin heeft ook skills van een ontwikkelaar nodig!
+
+Videoles [5 trends in systeembeheer](https://youtu.be/GGTS37Tsl-M)
 
 # Op verkenning in het systeem
 
@@ -184,6 +193,7 @@ commando:
 
 * Bash builtin
 * uitvoerbaar bestand in `${PATH}` (doe `echo ${PATH}`)
+* in huidige directory ⇒ `./script.sh`
 
 ## Opties
 
@@ -211,6 +221,11 @@ commando:
 
 Maak tools die één taak goed kunnen en laat ze samenwerken
 
+## Op verkenning
+
+* Videoles [De directorystructuur van Linux](https://youtu.be/c-RiJCw6EjY)
+* Videoles [Werken met bestanden en directories](https://youtu.be/QChM_j8RsWA)
+
 ## Oefening
 
 * Paul Cobbaut, [deel III (first steps on the command line)](http://linux-training.be/funhtml/pt03.html)
@@ -221,6 +236,84 @@ Maak tools die één taak goed kunnen en laat ze samenwerken
 * Kan je "pingen" tussen hostsysteem en VM?
 * Installeer de laatste updates op de VM
 
+# Basistaken systeembeheer
+
+## Software beheren
+
+* `yum search ZOEKTERM`
+* `yum install PAKKET`
+* `yum remove PAKKET`
+* `yum update`
+* `yum provides *bin/COMMANDO` → welk pakket bevat COMMANDO?
+* `rpm -ql PAKKET` → welke bestanden zijn geïnstalleerd met PAKKET?
+
+## Services beheren
+
+* `systemctl status SERVICE`
+* `systemctl {start,stop,restart} SERVICE`
+    * meteen
+* `systemctl {enable,disable} SERVICE`
+    * bij booten
+* `systemctl list-units --type service`
+
+## Systeemconfiguratie
+
+* Tekstbestand in `/etc/`
+    * vb. `/etc/httpd/httpd.conf`
+* Bestand bewerken met teksteditor (`vim`, `nano`)
+* Syntax controleren
+    * afh. service, bv. `apachectl configtest`
+* Service herstarten
+    * `systemctl restart httpd.service`
+
+## Netwerkinstellingen
+
+* Ip adres: `ip a` (of `address`)
+* Routetabel: `ip r` (of `route`)
+* DNS: `cat /etc/resolv.conf`
+
+Meestal ingesteld via DHCP
+
+Videoles [Geen Internet - Wat nu?](https://youtu.be/YHPTv9QlEzw)
+
+# Gebruikers, groepen, permissies
+
+## Root/admin
+
+* inloggen als root = bad practice
+* gewone gebruiker + `sudo`
+
+## Permissies
+
+* Gebruikers ingedeeld in groepen
+    * [Videoles gebruikers en groepen](https://youtu.be/5MfeegzjbSY)
+* Permissies toekennen aan
+    * eigenaar (user)
+    * groep (group)
+    * andere gebruikers (others)
+* `ls -l`, `chown`, `chgrp`, `chown`
+
+## Permissiecodes
+
+* 4 getallen (0-7)
+    * "special", user, group, others
+* Bitpatroon 3 bits
+    * 4 ↔ read
+    * 2 ↔ write
+    * 1 ↔ execute/directory access
+
+Videoles [Bestandspermissies](https://youtu.be/nt6Ra5E3qLA3.3.....3.+)
+
+## Permissiecodes
+
+vb. `chmod 0750 /usr/local/bin/myscript`
+
+* 0 → speciale permissies (uit)
+* 7 = 4 + 2 + 1 →  eigenaar kan lezen, schrijven, uitvoeren
+* 5 = 4 + 1 → groepsleden kunnen lezen, uitvoeren
+* 0 → andere gebruikers kunnen niets
+
+## `chmod 777` is *nooit* de oplossing!
 
 # That's it!
 
