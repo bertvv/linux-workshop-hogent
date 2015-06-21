@@ -1,6 +1,6 @@
 # Linux workshop
 
-Slides voor de Linux workshop, vakgroep Informatica, Hogeschool Gent, maandag 22 juni 2015.
+Broncode voor de slides van de Linux workshop, gegeven aan de vakgroep Informatica, Hogeschool Gent, maandag 22 juni 2015.
 
 
 * De presentatie zelf is te zien op: https://bertvv.github.io/linux-workshop-hogent/
