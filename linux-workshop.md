@@ -27,11 +27,13 @@ In een Bash shell, doe:
 ```
 $ mkdir workshop-linux
 $ cd workshop-linux
-$ git clone --config core.autocrlf=false  https://github.com/bertvv/lampstack
+$ git clone --config core.autocrlf=false \
+    https://github.com/bertvv/lampstack
 $ cd lampstack
 $ ./scripts/dependencies.sh
 $ vagrant up
 ```
+
 # Intermezzo
 
 ## Tools
@@ -50,6 +52,8 @@ Netwerkinterfaces
 * Internal
 
 Je kan combinatie gebruiken, tot 4 adapters per VM
+
+Mijn aanbeveling = NAT + Host-only
 
 ## NAT
 
@@ -86,14 +90,15 @@ Je kan combinatie gebruiken, tot 4 adapters per VM
 <http://www.ansible.com/>
 
 * Configuration management system
-* Beschrijf de gewenste toestand van je systeem (Yaml)
+* Beschrijf de *gewenste toestand* van je systeem (Yaml)
     * *Declaratief*, niet imperatief
     * Ansible brengt systeem naar die toestand
     * *Idempotent*
-* Reproduceerbaar
+* *Reproduceerbaar*
     * `git clone; vagrant up`
-    * dev → qa → prod
-* Schaalbaar (bv. Spotify: 1000'en servers)
+    * studenten helpen
+    * dev → qa → ua → prod
+* *Schaalbaar* (bv. Spotify: 1000'en servers)
 
 ## vb. Ansible playbook
 
@@ -148,7 +153,11 @@ Open webbrowser, surf naar <http://192.168.56.77/>
 * PHP, Java, Javascript, ... draaien in productie meestal op Linux-servers
 * Ontwikkelingsomgeving moet zoveel mogelijk lijken op productie
 
-## Waarom?
+---
+
+![](https://pbs.twimg.com/media/BmsGbg0CIAAjmBn.jpg)
+
+## Motivatie
 
 * Discussies: "Het werkte in dev, nu een probleem van ops"
 * Ontbrekende libraries, oudere versies, ... in productie
@@ -187,20 +196,21 @@ Welcome to your Packer-built virtual machine.
 
 ## Commando's
 
-### command --options arguments
-
-commando:
+*command --options arguments*
 
 * Bash builtin
-* uitvoerbaar bestand in `${PATH}` (doe `echo ${PATH}`)
+* uitvoerbaar bestand in `${PATH}`
+    * doe `echo ${PATH}`
 * in huidige directory ⇒ `./script.sh`
 
 ## Opties
 
 * veranderen het gedrag van een commando
 * beginnen met `-` (kort, één letter) of `--` (lang, woord)
-* aan elkaar hangen, vb. `ls -la` == `ls -l -a`
-* kunnen ook argumenten hebben, vb. `cut -d:`, `cut --delimiter=:`
+* aan elkaar hangen
+    * vb. `ls -la` == `ls -l -a`
+* kunnen ook argumenten hebben
+    * vb. `cut -d:`, `cut --delimiter=:`
 * let op voor uitzonderingen (bv. `find`)
 
 ## Argumenten
@@ -221,6 +231,20 @@ commando:
 
 Maak tools die één taak goed kunnen en laat ze samenwerken
 
+## Voorbeeld
+
+Gegeven csv met `groepnaam,gebruikersnaam`, hoeveel leden heeft elke projectgroep?
+
+. . .
+
+```bash
+tail -n+2 projectleden.csv | \  # print bestand zonder hoofding
+  cut -d, -f1 | \               # selecteer eerste kolom
+  sort | uniq -c | \            # sorteer en tel hoeveel elk voorkomt
+  sed 's/ *\([0-9]\) \([^ ]*\)$/\2,\1/' \  # Herformatteer
+  > groepaantallen.csv          # Sla op in nieuw .csv
+```
+
 ## Op verkenning
 
 * Videoles [De directorystructuur van Linux](https://youtu.be/c-RiJCw6EjY)
@@ -235,6 +259,7 @@ Maak tools die één taak goed kunnen en laat ze samenwerken
     * IP adres, default GW, DNS-server
 * Kan je "pingen" tussen hostsysteem en VM?
 * Installeer de laatste updates op de VM
+* Installeer de teksteditor `nano`
 
 # Basistaken systeembeheer
 
@@ -315,13 +340,41 @@ vb. `chmod 0750 /usr/local/bin/myscript`
 
 ## `chmod 777` is *nooit* de oplossing!
 
+# Opdracht
+
+## Opdracht 1
+
+1. Doe `git checkout oefening`
+2. `vagrant up webserver`
+
+"Webserver" is een nieuwe server zonder de handige koppeling tussen `www/` op het hostsysteem en de website op de server.
+
+*Doel:* zorg er voor dat een PHP-applicatie vanop het hostsysteem naar de VM gekopieerd wordt en getoond kan worden op de website <http://192.168.56.78/>
+
+## Opdracht 2
+
+Zorg dat Wordpress op `webserver` geïnstalleerd wordt, gebruik makende van een nieuwe database op `lampstack`
+
 # That's it!
+
+## Ideeën
+
+Servers op maat voor je olod?
+
+* Test/QA/UA-omgeving voor software-ontwikkeling
+* Build server
+* Continuous integration
+* Database-server
+* Hadoop-cluster
+* ...
+
+Leuke opdrachten voor project systeembeheer!
 
 ## Bedankt!
 
 Slides: <https://github.com/bertvv/linux-workshop-hogent>
 
-Code: <https://github.com/bertvv/vagrant-example>
+Code: <https://github.com/bertvv/lampstack>
 
 Meer op:
 

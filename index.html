@@ -80,7 +80,8 @@ code > span.er { color: #c3bf9f; }
 <p>In een Bash shell, doe:</p>
 <pre><code>$ mkdir workshop-linux
 $ cd workshop-linux
-$ git clone --config core.autocrlf=false  https://github.com/bertvv/lampstack
+$ git clone --config core.autocrlf=false \
+    https://github.com/bertvv/lampstack
 $ cd lampstack
 $ ./scripts/dependencies.sh
 $ vagrant up</code></pre>
@@ -102,6 +103,7 @@ $ vagrant up</code></pre>
 <li>Internal</li>
 </ul>
 <p>Je kan combinatie gebruiken, tot 4 adapters per VM</p>
+<p>Mijn aanbeveling = NAT + Host-only</p>
 </section><section id="nat" class="slide level2">
 <h1>NAT</h1>
 <figure>
@@ -144,18 +146,19 @@ $ vagrant up</code></pre>
 <p><a href="http://www.ansible.com/" class="uri">http://www.ansible.com/</a></p>
 <ul>
 <li>Configuration management system</li>
-<li>Beschrijf de gewenste toestand van je systeem (Yaml)
+<li>Beschrijf de <em>gewenste toestand</em> van je systeem (Yaml)
 <ul>
 <li><em>Declaratief</em>, niet imperatief</li>
 <li>Ansible brengt systeem naar die toestand</li>
 <li><em>Idempotent</em></li>
 </ul></li>
-<li>Reproduceerbaar
+<li><em>Reproduceerbaar</em>
 <ul>
 <li><code>git clone; vagrant up</code></li>
-<li>dev → qa → prod</li>
+<li>studenten helpen</li>
+<li>dev → qa → ua → prod</li>
 </ul></li>
-<li>Schaalbaar (bv. Spotify: 1000'en servers)</li>
+<li><em>Schaalbaar</em> (bv. Spotify: 1000'en servers)</li>
 </ul>
 </section><section id="vb.-ansible-playbook" class="slide level2">
 <h1>vb. Ansible playbook</h1>
@@ -210,8 +213,13 @@ $ vagrant up</code></pre>
 <li>PHP, Java, Javascript, ... draaien in productie meestal op Linux-servers</li>
 <li>Ontwikkelingsomgeving moet zoveel mogelijk lijken op productie</li>
 </ul>
-</section><section id="waarom" class="slide level2">
-<h1>Waarom?</h1>
+</section><section class="slide level2">
+
+<figure>
+<img src="https://pbs.twimg.com/media/BmsGbg0CIAAjmBn.jpg" />
+</figure>
+</section><section id="motivatie" class="slide level2">
+<h1>Motivatie</h1>
 <ul>
 <li>Discussies: &quot;Het werkte in dev, nu een probleem van ops&quot;</li>
 <li>Ontbrekende libraries, oudere versies, ... in productie</li>
@@ -234,6 +242,7 @@ $ vagrant up</code></pre>
 <li>DevOps (Culture, Automation, Monitoring, Sharing)</li>
 </ul>
 <p>⇒ Een sysadmin heeft ook skills van een ontwikkelaar nodig!</p>
+<p>Videoles <a href="https://youtu.be/GGTS37Tsl-M">5 trends in systeembeheer</a></p>
 </section></section>
 <section><section id="op-verkenning-in-het-systeem" class="titleslide slide level1"><h1>Op verkenning in het systeem</h1></section><section id="inloggen" class="slide level2">
 <h1>Inloggen</h1>
@@ -245,11 +254,13 @@ Welcome to your Packer-built virtual machine.
 [vagrant@lampstack ~]$ _</code></pre>
 </section><section id="commandos" class="slide level2">
 <h1>Commando's</h1>
-<h3 id="command---options-arguments">command --options arguments</h3>
-<p>commando:</p>
+<p><em>command --options arguments</em></p>
 <ul>
 <li>Bash builtin</li>
-<li>uitvoerbaar bestand in <code>${PATH}</code> (doe <code>echo ${PATH}</code>)</li>
+<li>uitvoerbaar bestand in <code>${PATH}</code>
+<ul>
+<li>doe <code>echo ${PATH}</code></li>
+</ul></li>
 <li>in huidige directory ⇒ <code>./script.sh</code></li>
 </ul>
 </section><section id="opties" class="slide level2">
@@ -257,8 +268,14 @@ Welcome to your Packer-built virtual machine.
 <ul>
 <li>veranderen het gedrag van een commando</li>
 <li>beginnen met <code>-</code> (kort, één letter) of <code>--</code> (lang, woord)</li>
-<li>aan elkaar hangen, vb. <code>ls -la</code> == <code>ls -l -a</code></li>
-<li>kunnen ook argumenten hebben, vb. <code>cut -d:</code>, <code>cut --delimiter=:</code></li>
+<li>aan elkaar hangen
+<ul>
+<li>vb. <code>ls -la</code> == <code>ls -l -a</code></li>
+</ul></li>
+<li>kunnen ook argumenten hebben
+<ul>
+<li>vb. <code>cut -d:</code>, <code>cut --delimiter=:</code></li>
+</ul></li>
 <li>let op voor uitzonderingen (bv. <code>find</code>)</li>
 </ul>
 </section><section id="argumenten" class="slide level2">
@@ -280,6 +297,22 @@ Welcome to your Packer-built virtual machine.
 </section><section id="de-unix-filosofie" class="slide level2">
 <h1>De UNIX-filosofie</h1>
 <p>Maak tools die één taak goed kunnen en laat ze samenwerken</p>
+</section><section id="voorbeeld" class="slide level2">
+<h1>Voorbeeld</h1>
+<p>Gegeven csv met <code>groepnaam,gebruikersnaam</code>, hoeveel leden heeft elke projectgroep?</p>
+<div class="fragment">
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">tail</span> -n+2 projectleden.csv <span class="kw">|</span> <span class="kw">\ </span> <span class="co"># print bestand zonder hoofding</span>
+  <span class="kw">cut</span> -d, -f1 <span class="kw">|</span> <span class="kw">\ </span>              <span class="co"># selecteer eerste kolom</span>
+  <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> -c <span class="kw">|</span> <span class="kw">\ </span>           <span class="co"># sorteer en tel hoeveel elk voorkomt</span>
+  <span class="kw">sed</span> <span class="st">&#39;s/ *\([0-9]\) \([^ ]*\)$/\2,\1/&#39;</span> <span class="dt">\ </span> <span class="co"># Herformatteer</span>
+  <span class="kw">&gt;</span> <span class="kw">groepaantallen.csv</span>          <span class="co"># Sla op in nieuw .csv</span></code></pre>
+</div>
+</section><section id="op-verkenning" class="slide level2">
+<h1>Op verkenning</h1>
+<ul>
+<li>Videoles <a href="https://youtu.be/c-RiJCw6EjY">De directorystructuur van Linux</a></li>
+<li>Videoles <a href="https://youtu.be/QChM_j8RsWA">Werken met bestanden en directories</a></li>
+</ul>
 </section><section id="oefening" class="slide level2">
 <h1>Oefening</h1>
 <ul>
@@ -292,6 +325,7 @@ Welcome to your Packer-built virtual machine.
 </ul></li>
 <li>Kan je &quot;pingen&quot; tussen hostsysteem en VM?</li>
 <li>Installeer de laatste updates op de VM</li>
+<li>Installeer de teksteditor <code>nano</code></li>
 </ul>
 </section></section>
 <section><section id="basistaken-systeembeheer" class="titleslide slide level1"><h1>Basistaken systeembeheer</h1></section><section id="software-beheren" class="slide level2">
@@ -318,8 +352,8 @@ Welcome to your Packer-built virtual machine.
 </ul></li>
 <li><code>systemctl list-units --type service</code></li>
 </ul>
-</section><section id="configuratie" class="slide level2">
-<h1>Configuratie</h1>
+</section><section id="systeemconfiguratie" class="slide level2">
+<h1>Systeemconfiguratie</h1>
 <ul>
 <li>Tekstbestand in <code>/etc/</code>
 <ul>
@@ -335,6 +369,15 @@ Welcome to your Packer-built virtual machine.
 <li><code>systemctl restart httpd.service</code></li>
 </ul></li>
 </ul>
+</section><section id="netwerkinstellingen" class="slide level2">
+<h1>Netwerkinstellingen</h1>
+<ul>
+<li>Ip adres: <code>ip a</code> (of <code>address</code>)</li>
+<li>Routetabel: <code>ip r</code> (of <code>route</code>)</li>
+<li>DNS: <code>cat /etc/resolv.conf</code></li>
+</ul>
+<p>Meestal ingesteld via DHCP</p>
+<p>Videoles <a href="https://youtu.be/YHPTv9QlEzw">Geen Internet - Wat nu?</a></p>
 </section></section>
 <section><section id="gebruikers-groepen-permissies" class="titleslide slide level1"><h1>Gebruikers, groepen, permissies</h1></section><section id="rootadmin" class="slide level2">
 <h1>Root/admin</h1>
@@ -345,7 +388,10 @@ Welcome to your Packer-built virtual machine.
 </section><section id="permissies" class="slide level2">
 <h1>Permissies</h1>
 <ul>
-<li>Gebruikers ingedeeld in groepen</li>
+<li>Gebruikers ingedeeld in groepen
+<ul>
+<li><a href="https://youtu.be/5MfeegzjbSY">Videoles gebruikers en groepen</a></li>
+</ul></li>
 <li>Permissies toekennen aan
 <ul>
 <li>eigenaar (user)</li>
@@ -368,6 +414,7 @@ Welcome to your Packer-built virtual machine.
 <li>1 ↔ execute/directory access</li>
 </ul></li>
 </ul>
+<p>Videoles <a href="https://youtu.be/nt6Ra5E3qLA3.3.....3.+">Bestandspermissies</a></p>
 </section><section id="permissiecodes-1" class="slide level2">
 <h1>Permissiecodes</h1>
 <p>vb. <code>chmod 0750 /usr/local/bin/myscript</code></p>
@@ -380,10 +427,34 @@ Welcome to your Packer-built virtual machine.
 </section><section id="chmod-777-is-nooit-de-oplossing" class="slide level2">
 <h1><code>chmod 777</code> is <em>nooit</em> de oplossing!</h1>
 </section></section>
-<section><section id="thats-it" class="titleslide slide level1"><h1>That's it!</h1></section><section id="bedankt" class="slide level2">
+<section><section id="opdracht" class="titleslide slide level1"><h1>Opdracht</h1></section><section id="opdracht-1" class="slide level2">
+<h1>Opdracht 1</h1>
+<ol type="1">
+<li>Doe <code>git checkout oefening</code></li>
+<li><code>vagrant up webserver</code></li>
+</ol>
+<p>&quot;Webserver&quot; is een nieuwe server zonder de handige koppeling tussen <code>www/</code> op het hostsysteem en de website op de server.</p>
+<p><em>Doel:</em> zorg er voor dat een PHP-applicatie vanop het hostsysteem naar de VM gekopieerd wordt en getoond kan worden op de website <a href="http://192.168.56.78/" class="uri">http://192.168.56.78/</a></p>
+</section><section id="opdracht-2" class="slide level2">
+<h1>Opdracht 2</h1>
+<p>Zorg dat Wordpress op <code>webserver</code> geïnstalleerd wordt, gebruik makende van een nieuwe database op <code>lampstack</code></p>
+</section></section>
+<section><section id="thats-it" class="titleslide slide level1"><h1>That's it!</h1></section><section id="ideeën" class="slide level2">
+<h1>Ideeën</h1>
+<p>Servers op maat voor je olod?</p>
+<ul>
+<li>Test/QA/UA-omgeving voor software-ontwikkeling</li>
+<li>Build server</li>
+<li>Continuous integration</li>
+<li>Database-server</li>
+<li>Hadoop-cluster</li>
+<li>...</li>
+</ul>
+<p>Leuke opdrachten voor project systeembeheer!</p>
+</section><section id="bedankt" class="slide level2">
 <h1>Bedankt!</h1>
 <p>Slides: <a href="https://github.com/bertvv/linux-workshop-hogent" class="uri">https://github.com/bertvv/linux-workshop-hogent</a></p>
-<p>Code: <a href="https://github.com/bertvv/vagrant-example" class="uri">https://github.com/bertvv/vagrant-example</a></p>
+<p>Code: <a href="https://github.com/bertvv/lampstack" class="uri">https://github.com/bertvv/lampstack</a></p>
 <p>Meer op:</p>
 <ul>
 <li>Videolessen: <a href="https://www.youtube.com/user/bertvvrhogent/" class="uri">https://www.youtube.com/user/bertvvrhogent/</a></li>
